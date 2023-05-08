@@ -1,20 +1,26 @@
-import {Inter} from 'next/font/google'
-import {FormEvent} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 
-const inter = Inter({subsets: ['latin']})
 
-function handleSubmit(e: FormEvent<HTMLFormElement>) {
-  alert((e.target as any).name.value);
-}
 
 export default function WorkoutCreate() {
+  const [workoutValue, setChange] = useState('');
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    setChange(e.target.value);
+  }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    alert(workoutValue);
+    e.preventDefault();
+  }
+
   return (
-    <main className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}>
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+    <main>
+      <div>
         <form className="flex-1" onSubmit={handleSubmit}>
           <label>
             오늘 할 운동:
-            <input type="text" name="name"/>
+            <input type="text" name="name" value={workoutValue} onChange={handleChange}/>
           </label>
           <input type="submit" value="등록"/>
         </form>
