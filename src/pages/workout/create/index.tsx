@@ -1,7 +1,5 @@
 import {ChangeEvent, FormEvent, useState} from "react";
 
-
-
 export default function WorkoutCreate() {
   const [workoutValue, setChange] = useState('');
 
@@ -10,7 +8,29 @@ export default function WorkoutCreate() {
   }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    alert(workoutValue);
+    const WORKOUTS = 'workouts';
+    const workouts = localStorage.getItem(WORKOUTS);
+    if (!workouts) {
+      localStorage.setItem(WORKOUTS, JSON.stringify([workoutValue]));
+      console.log('localStorage', localStorage.getItem(WORKOUTS));
+      return;
+    }
+
+    try {
+      const parsedWorkouts = JSON.parse(workouts) as string[];
+
+      const merged = [...parsedWorkouts, workoutValue];
+
+      localStorage.setItem(WORKOUTS, JSON.stringify(merged));
+
+      console.log('localStorage', localStorage.getItem(WORKOUTS));
+    } catch (error) {
+      alert('error!');
+    }
+
+    // if (workoutList.getItem('workout') === null) {
+    //   workoutList.setItem('workout', JSON.stringify([workoutValue]));
+    // } else workoutList.setItem('workout', '');
     e.preventDefault();
   }
 
